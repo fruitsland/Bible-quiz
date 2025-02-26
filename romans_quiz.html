@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bible Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .quiz-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .options button:hover {
+            background-color: #45a049;
+        }
+        #score {
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Bible Quiz Game</h1>
+        <div id="question" class="question"></div>
+        <div id="options" class="options"></div>
+        <div id="score">Score: 0</div>
+        <button onclick="nextQuestion()" style="margin-top: 20px;">Next Question</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Who built the ark?",
+                options: ["Moses", "Noah", "David", "Abraham"],
+                answer: "Noah"
+            },
+            {
+                question: "How many days did God take to create the world?",
+                options: ["4", "6", "7", "10"],
+                answer: "6"
+            },
+            {
+                question: "Who was thrown into the lions' den?",
+                options: ["Daniel", "Joseph", "Samuel", "Jonah"],
+                answer: "Daniel"
+            },
+            {
+                question: "What was the name of Jesus' mother?",
+                options: ["Martha", "Mary", "Elizabeth", "Sarah"],
+                answer: "Mary"
+            },
+    // Romans
+            { question: "Who wrote the Book of Romans?", options: ["Peter", "Paul", "James", "John"], answer: "Paul" },
+            { question: "To whom was Romans primarily addressed?", options: ["Jews", "Gentiles", "Romans", "All of the above"], answer: "All of the above" },
+            { question: "What is the main theme of Romans?", options: ["Love", "Faith", "Righteousness by faith", "Obedience"], answer: "Righteousness by faith" },
+            { question: "According to Romans 1:16, what is the gospel?", options: ["The law", "Power of God for salvation", "A set of rules", "A good story"], answer: "Power of God for salvation" },
+            { question: "In Romans 3:23, what have all people done?", options: ["Sinned", "Prayed", "Believed", "Obeyed"], answer: "Sinned" },
+            { question: "What justifies a person according to Romans 5:1?", options: ["Works", "Faith", "Sacrifice", "Law"], answer: "Faith" },
+            { question: "What does Romans 6:23 say is the wages of sin?", options: ["Death", "Life", "Punishment", "Forgiveness"], answer: "Death" },
+            { question: "What gift does God offer in Romans 6:23?", options: ["Wealth", "Eternal life", "Power", "Wisdom"], answer: "Eternal life" },
+            { question: "In Romans 7, what does Paul struggle with?", options: ["Pride", "Sin", "Doubt", "Fear"], answer: "Sin" },
+            { question: "According to Romans 8:1, who has no condemnation?", options: ["Those in Christ Jesus", "The righteous", "The Jews", "The obedient"], answer: "Those in Christ Jesus" },
+            { question: "What cannot separate us from God’s love per Romans 8:38-39?", options: ["Sin", "Death", "Anything", "Disobedience"], answer: "Anything" },
+            { question: "What does Romans 10:9 say leads to salvation?", options: ["Confessing Jesus as Lord", "Good works", "Baptism", "Prayer"], answer: "Confessing Jesus as Lord" },
+            { question: "In Romans 12:1, what are believers urged to offer?", options: ["Money", "Their bodies", "Prayers", "Sacrifices"], answer: "Their bodies" },
+            { question: "What should Christians not be conformed to in Romans 12:2?", options: ["The church", "The world", "The law", "God’s will"], answer: "The world" },
+            { question: "What does Romans 13:1 say about authorities?", options: ["Resist them", "They are from God", "Ignore them", "They are evil"], answer: "They are from God" },
+            { question: "What is the fulfillment of the law according to Romans 13:10?", options: ["Love", "Obedience", "Faith", "Sacrifice"], answer: "Love" },
+            { question: "In Romans 14, what should strong believers not do?", options: ["Judge the weak", "Eat meat", "Pray", "Worship"], answer: "Judge the weak" },
+            { question: "What does Romans 15:13 say God fills believers with?", options: ["Peace and joy", "Wealth", "Knowledge", "Strength"], answer: "Peace and joy" },
+            { question: "Who does Paul plan to visit in Romans 15:24?", options: ["Spain", "Jerusalem", "Corinth", "Ephesus"], answer: "Spain" },
+            { question: "Who does Paul greet in Romans 16:1?", options: ["Phoebe", "Priscilla", "Mary", "Lydia"], answer: "Phoebe" },
+     // Romans Chapter 1
+    { question: "What does Paul call himself in Romans 1:1?", options: ["A servant of Christ", "A king", "A judge", "A scribe"], answer: "A servant of Christ" },
+    { question: "What is Paul eager to preach in Romans 1:15?", options: ["The law", "The gospel", "Judgment", "Prophecy"], answer: "The gospel" },
+    { question: "What are people without excuse for in Romans 1:20?", options: ["Not knowing God", "Breaking the law", "Rejecting Paul", "Sinning"], answer: "Not knowing God" },
+    { question: "What did people exchange the truth of God for in Romans 1:25?", options: ["Riches", "A lie", "Power", "Freedom"], answer: "A lie" },
+    { question: "What does Romans 1:28 say God gave people over to?", options: ["A depraved mind", "Wealth", "Peace", "Knowledge"], answer: "A depraved mind" },
+    { question: "What sin is mentioned in Romans 1:29?", options: ["Murder", "Laziness", "Doubt", "Fear"], answer: "Murder" },
+    { question: "Who does Paul long to see in Romans 1:11?", options: ["The Jews", "The Romans", "The Gentiles", "The apostles"], answer: "The Romans" },
+
+    // Romans Chapter 2
+    { question: "What does Romans 2:1 warn against?", options: ["Judging others", "Stealing", "Lying", "Pride"], answer: "Judging others" },
+    { question: "What leads to repentance in Romans 2:4?", options: ["God’s wrath", "God’s kindness", "The law", "Punishment"], answer: "God’s kindness" },
+    { question: "According to Romans 2:6, how will God judge people?", options: ["By their works", "By their faith", "By their wealth", "By their heritage"], answer: "By their works" },
+    { question: "What does Romans 2:11 say about God?", options: ["He is partial", "He shows no favoritism", "He loves only Jews", "He judges harshly"], answer: "He shows no favoritism" },
+    { question: "Who will be justified in Romans 2:13?", options: ["Hearers of the law", "Doers of the law", "Teachers of the law", "Writers of the law"], answer: "Doers of the law" },
+    { question: "What do Gentiles have written on their hearts in Romans 2:15?", options: ["The law", "Prophecies", "Songs", "Promises"], answer: "The law" },
+    { question: "What will God judge according to Romans 2:16?", options: ["Men’s secrets", "Men’s wealth", "Men’s words", "Men’s families"], answer: "Men’s secrets" },
+
+    // Romans Chapter 3
+    { question: "What advantage do Jews have in Romans 3:1?", options: ["Wealth", "God’s oracles", "Strength", "Land"], answer: "God’s oracles" },
+    { question: "What does Romans 3:10 say about righteousness?", options: ["Some are righteous", "None is righteous", "All are righteous", "Jews are righteous"], answer: "None is righteous" },
+    { question: "What has the law made all people in Romans 3:19?", options: ["Accountable to God", "Free from sin", "Righteous", "Happy"], answer: "Accountable to God" },
+    { question: "How is righteousness gained in Romans 3:22?", options: ["Through faith", "Through works", "Through sacrifice", "Through prayer"], answer: "Through faith" },
+    { question: "What justifies freely in Romans 3:24?", options: ["Grace", "Law", "Effort", "Repentance"], answer: "Grace" },
+    { question: "What did God present Christ as in Romans 3:25?", options: ["A king", "A sacrifice of atonement", "A teacher", "A judge"], answer: "A sacrifice of atonement" },
+    { question: "What does Romans 3:28 say justifies a person?", options: ["Faith apart from works", "Works of the law", "Love", "Obedience"], answer: "Faith apart from works" },
+
+    // Romans Chapter 4
+    { question: "Who is the father of all who believe in Romans 4:11?", options: ["Moses", "Abraham", "David", "Paul"], answer: "Abraham" },
+    { question: "What was credited to Abraham as righteousness in Romans 4:3?", options: ["His works", "His faith", "His offerings", "His obedience"], answer: "His faith" },
+    { question: "What did Abraham receive before circumcision in Romans 4:10?", options: ["Land", "Righteousness", "A son", "A promise"], answer: "Righteousness" },
+    { question: "What does Romans 4:15 say the law brings?", options: ["Peace", "Wrath", "Joy", "Freedom"], answer: "Wrath" },
+    { question: "What is the promise to Abraham based on in Romans 4:16?", options: ["Law", "Grace", "Works", "Circumcision"], answer: "Grace" },
+    { question: "What did Abraham believe God could do in Romans 4:21?", options: ["Raise the dead", "Heal the sick", "Part seas", "Give wealth"], answer: "Raise the dead" },
+    { question: "For whom was Abraham’s faith credited in Romans 4:24?", options: ["Only Jews", "Only Gentiles", "Believers in Jesus", "Everyone"], answer: "Believers in Jesus" },
+
+    // Romans Chapter 5
+    { question: "What do we have through faith in Romans 5:1?", options: ["Wealth", "Peace with God", "Power", "Fame"], answer: "Peace with God" },
+    { question: "What do we rejoice in according to Romans 5:2?", options: ["Suffering", "Hope of God’s glory", "Riches", "Strength"], answer: "Hope of God’s glory" },
+    { question: "What does suffering produce in Romans 5:3?", options: ["Fear", "Perseverance", "Anger", "Doubt"], answer: "Perseverance" },
+    { question: "What was poured into our hearts in Romans 5:5?", options: ["God’s love", "God’s law", "God’s wrath", "God’s wisdom"], answer: "God’s love" },
+    { question: "When did Christ die for us according to Romans 5:6?", options: ["When we were strong", "When we were still sinners", "When we were righteous", "When we asked"], answer: "When we were still sinners" },
+    { question: "What did Christ’s death reconcile us to in Romans 5:10?", options: ["The law", "God", "Each other", "The world"], answer: "God" },
+    { question: "Through whom did sin enter the world in Romans 5:12?", options: ["Eve", "Adam", "Satan", "Cain"], answer: "Adam" },
+    { question: "What reigned from Adam to Moses in Romans 5:14?", options: ["Death", "Life", "Law", "Grace"], answer: "Death" },
+    { question: "What is the gift not like in Romans 5:15?", options: ["The trespass", "The law", "The promise", "The reward"], answer: "The trespass" },
+    { question: "What came through one man’s obedience in Romans 5:19?", options: ["Sin", "Righteousness", "Death", "Judgment"], answer: "Righteousness" },
+    { question: "What increased where sin increased in Romans 5:20?", options: ["Law", "Grace", "Punishment", "Fear"], answer: "Grace" },
+    // Romans Chapter 6
+    { question: "What are believers baptized into according to Romans 6:3?", options: ["Water", "Christ’s death", "The church", "The law"], answer: "Christ’s death" },
+    { question: "What should we not let reign in our bodies per Romans 6:12?", options: ["Sin", "Fear", "Love", "Faith"], answer: "Sin" },
+    { question: "What are we dead to in Romans 6:2?", options: ["The world", "Sin", "The law", "Ourselves"], answer: "Sin" },
+    { question: "What are we to consider ourselves in Romans 6:11?", options: ["Alive to sin", "Dead to God", "Dead to sin", "Alive to the law"], answer: "Dead to sin" },
+    { question: "What are we slaves to in Romans 6:16 when we obey it?", options: ["Righteousness or sin", "The law", "The flesh", "The Spirit"], answer: "Righteousness or sin" },
+    { question: "What were we set free from in Romans 6:18?", options: ["Sin", "Death", "The law", "Judgment"], answer: "Sin" },
+    { question: "What is the benefit of being slaves to righteousness in Romans 6:22?", options: ["Wealth", "Holiness", "Power", "Fame"], answer: "Holiness" },
+    { question: "What leads to eternal life in Romans 6:22?", options: ["Sin", "Law", "Righteousness", "Works"], answer: "Righteousness" },
+    { question: "What is the free gift of God in Romans 6:23?", options: ["Eternal life", "The law", "Riches", "Peace"], answer: "Eternal life" },
+    { question: "Who paid the wages of sin in Romans 6:23?", options: ["God", "Christ", "Sinners", "No one"], answer: "Christ" },
+
+    // Romans Chapter 7
+    { question: "What are we released from through Christ’s death in Romans 7:4?", options: ["The law", "Sin", "Death", "Judgment"], answer: "The law" },
+    { question: "What aroused sinful passions according to Romans 7:5?", options: ["Faith", "The law", "Grace", "Love"], answer: "The law" },
+    { question: "What question does Paul ask in Romans 7:7?", options: ["Is the law sin?", "Is faith enough?", "Is sin dead?", "Is God just?"], answer: "Is the law sin?" },
+    { question: "What gave opportunity to sin in Romans 7:8?", options: ["The flesh", "The commandment", "The Spirit", "Freedom"], answer: "The commandment" },
+    { question: "What does Paul say he does in Romans 7:15?", options: ["What he wants", "What he hates", "What he knows", "What he fears"], answer: "What he hates" },
+    { question: "What does Paul delight in according to Romans 7:22?", options: ["Sin", "God’s law", "The flesh", "Freedom"], answer: "God’s law" },
+    { question: "What wages war against Paul’s mind in Romans 7:23?", options: ["The law of sin", "The Spirit", "The world", "Faith"], answer: "The law of sin" },
+    { question: "Who does Paul thank for deliverance in Romans 7:25?", options: ["God", "The law", "Himself", "The church"], answer: "God" },
+    { question: "What does Paul call himself in Romans 7:24?", options: ["A wretched man", "A holy man", "A free man", "A wise man"], answer: "A wretched man" },
+    { question: "What serves sin in Romans 7:25?", options: ["The mind", "The flesh", "The Spirit", "The heart"], answer: "The flesh" },
+
+    // Romans Chapter 8
+    { question: "What law sets us free in Romans 8:2?", options: ["Law of Moses", "Law of Spirit of life", "Law of sin", "Law of love"], answer: "Law of Spirit of life" },
+    { question: "What did God do by sending His Son in Romans 8:3?", options: ["Condemned sin", "Abolished the law", "Judged the world", "Saved the Jews"], answer: "Condemned sin" },
+    { question: "Who lives according to the Spirit in Romans 8:5?", options: ["Those who mind the Spirit", "Those who obey the law", "Those who sin", "Those who pray"], answer: "Those who mind the Spirit" },
+    { question: "What is life and peace in Romans 8:6?", options: ["The flesh", "The Spirit", "The law", "The world"], answer: "The Spirit" },
+    { question: "Who dwells in believers in Romans 8:11?", options: ["The Spirit", "The law", "Sin", "Angels"], answer: "The Spirit" },
+    { question: "What are believers called in Romans 8:14?", options: ["Servants", "Sons of God", "Sinners", "Judges"], answer: "Sons of God" },
+    { question: "What do we cry out in Romans 8:15?", options: ["Help", "Abba, Father", "Save us", "Hallelujah"], answer: "Abba, Father" },
+    { question: "What bears witness with our spirit in Romans 8:16?", options: ["The law", "The Spirit", "The flesh", "The church"], answer: "The Spirit" },
+    { question: "What do we share in Romans 8:17?", options: ["Christ’s sufferings", "The law", "Sin", "Wealth"], answer: "Christ’s sufferings" },
+    { question: "What groans in Romans 8:22?", options: ["The Spirit", "Creation", "The church", "Paul"], answer: "Creation" },
+    { question: "Who intercedes for us in Romans 8:26?", options: ["The Spirit", "Jesus", "Paul", "Angels"], answer: "The Spirit" },
+    { question: "What works together for good in Romans 8:28?", options: ["All things", "The law", "Faith", "Works"], answer: "All things" },
+    { question: "Who did God foreknow in Romans 8:29?", options: ["The Jews", "Those He predestined", "The Gentiles", "Everyone"], answer: "Those He predestined" },
+    { question: "What can’t separate us from God’s love in Romans 8:39?", options: ["Anything", "Sin", "Death", "The law"], answer: "Anything" },
+
+    // Romans Chapter 9
+    { question: "What does Paul have for Israel in Romans 9:2?", options: ["Great sorrow", "Great joy", "Great anger", "Great pride"], answer: "Great sorrow" },
+    { question: "Whose children are not all Israel in Romans 9:6?", options: ["Abraham’s", "Moses’", "David’s", "Paul’s"], answer: "Abraham’s" },
+    { question: "Who was chosen over Ishmael in Romans 9:7?", options: ["Isaac", "Jacob", "Esau", "Joseph"], answer: "Isaac" },
+    { question: "What depends on God’s mercy in Romans 9:16?", options: ["Salvation", "Wealth", "Power", "Law"], answer: "Salvation" },
+    { question: "Who was hardened in Romans 9:18?", options: ["Pharaoh", "Moses", "Israel", "Paul"], answer: "Pharaoh" },
+    { question: "What does God prepare for glory in Romans 9:23?", options: ["Vessels of mercy", "Vessels of wrath", "The law", "The church"], answer: "Vessels of mercy" },
+    { question: "Who does God call in Romans 9:24?", options: ["Jews only", "Gentiles only", "Both Jews and Gentiles", "The righteous"], answer: "Both Jews and Gentiles" },
+
+    // Romans Chapter 10
+    { question: "What is the end of the law in Romans 10:4?", options: ["Christ", "Faith", "Works", "Judgment"], answer: "Christ" },
+    { question: "What does righteousness based on faith say in Romans 10:6?", options: ["Do not ascend", "Obey the law", "Work harder", "Fear God"], answer: "Do not ascend" },
+    { question: "What is near you in Romans 10:8?", options: ["The law", "The word of faith", "Sin", "Judgment"], answer: "The word of faith" },
+    { question: "What must one believe in Romans 10:9?", options: ["God raised Jesus", "The law saves", "Works justify", "Sin is dead"], answer: "God raised Jesus" },
+    { question: "What brings righteousness in Romans 10:10?", options: ["The heart’s belief", "The law", "Works", "Sacrifice"], answer: "The heart’s belief" },
+    { question: "Who will not be ashamed in Romans 10:11?", options: ["Those who believe", "Those who work", "Those who pray", "Those who judge"], answer: "Those who believe" },
+    { question: "What is there no distinction between in Romans 10:12?", options: ["Jew and Greek", "Rich and poor", "Old and young", "Men and women"], answer: "Jew and Greek" },
+    { question: "Who must be sent to preach in Romans 10:15?", options: ["Teachers", "Preachers", "Prophets", "Judges"], answer: "Preachers" },
+    { question: "What does Romans 10:17 say faith comes from?", options: ["Hearing the word", "Doing good", "Obeying the law", "Seeing miracles"], answer: "Hearing the word" },
+    // Romans Chapter 11 (30 questions)
+    { question: "What does Paul ask in Romans 11:1 about God and Israel?", options: ["Has God rejected His people?", "Has Israel fallen?", "Is Israel saved?", "Does God love Israel?"], answer: "Has God rejected His people?" },
+    { question: "What does Paul say God has not done in Romans 11:1?", options: ["Rejected His people", "Saved the Gentiles", "Given the law", "Sent prophets"], answer: "Rejected His people" },
+    { question: "What tribe is Paul from in Romans 11:1?", options: ["Judah", "Benjamin", "Levi", "Ephraim"], answer: "Benjamin" },
+    { question: "What does God reserve in Romans 11:4?", options: ["7000 who didn’t bow to Baal", "A remnant of priests", "A new law", "A kingdom"], answer: "7000 who didn’t bow to Baal" },
+    { question: "What exists by grace in Romans 11:5?", options: ["A remnant", "The law", "Sin", "Judgment"], answer: "A remnant" },
+    { question: "What cannot be based on works in Romans 11:6?", options: ["Grace", "Faith", "Love", "Salvation"], answer: "Grace" },
+    { question: "What did Israel not obtain in Romans 11:7?", options: ["The law", "What it sought", "Peace", "Wealth"], answer: "What it sought" },
+    { question: "Who obtained it in Romans 11:7?", options: ["The elect", "The Gentiles", "The Jews", "The apostles"], answer: "The elect" },
+    { question: "What happened to the rest in Romans 11:7?", options: ["They were hardened", "They were saved", "They were blessed", "They were freed"], answer: "They were hardened" },
+    { question: "What did God give Israel in Romans 11:8?", options: ["A spirit of stupor", "A new covenant", "A king", "A promise"], answer: "A spirit of stupor" },
+    { question: "What does Paul hope Israel’s transgression brings in Romans 11:11?", options: ["Salvation to Gentiles", "Judgment", "A new law", "Peace"], answer: "Salvation to Gentiles" },
+    { question: "What might Israel’s acceptance bring in Romans 11:12?", options: ["Riches for the world", "Death", "Sin", "Law"], answer: "Riches for the world" },
+    { question: "Who is Paul an apostle to in Romans 11:13?", options: ["The Jews", "The Gentiles", "The Romans", "The church"], answer: "The Gentiles" },
+    { question: "What does Paul hope to provoke in Romans 11:14?", options: ["Jealousy", "Anger", "Faith", "Obedience"], answer: "Jealousy" },
+    { question: "What is Israel’s rejection like in Romans 11:15?", options: ["Reconciliation of the world", "End of the law", "Judgment", "Sin"], answer: "Reconciliation of the world" },
+    { question: "What is holy if the root is holy in Romans 11:16?", options: ["The branches", "The fruit", "The leaves", "The tree"], answer: "The branches" },
+    { question: "What were some branches in Romans 11:17?", options: ["Broken off", "Grafted in", "Burned", "Planted"], answer: "Broken off" },
+    { question: "What were Gentiles grafted into in Romans 11:17?", options: ["The olive tree", "The law", "The church", "The vine"], answer: "The olive tree" },
+    { question: "What should Gentiles not do in Romans 11:18?", options: ["Boast", "Pray", "Work", "Believe"], answer: "Boast" },
+    { question: "Why were branches broken off in Romans 11:20?", options: ["Unbelief", "Sin", "Pride", "Disobedience"], answer: "Unbelief" },
+    { question: "What does God show in Romans 11:22?", options: ["Severity and kindness", "Wrath and love", "Judgment and grace", "Law and freedom"], answer: "Severity and kindness" },
+    { question: "What can God do to the natural branches in Romans 11:24?", options: ["Graft them in again", "Cut them off", "Burn them", "Ignore them"], answer: "Graft them in again" },
+    { question: "What mystery does Paul reveal in Romans 11:25?", options: ["Israel’s partial hardening", "Gentile salvation", "The law’s end", "Christ’s return"], answer: "Israel’s partial hardening" },
+    { question: "Until what happens in Romans 11:25?", options: ["Full number of Gentiles comes in", "Israel repents", "The law is fulfilled", "Judgment day"], answer: "Full number of Gentiles comes in" },
+    { question: "Who will be saved in Romans 11:26?", options: ["All Israel", "All Gentiles", "The elect", "The righteous"], answer: "All Israel" },
+    { question: "Who will turn godlessness away from Jacob in Romans 11:26?", options: ["The Deliverer", "Paul", "The law", "The church"], answer: "The Deliverer" },
+    { question: "What does God’s gift and call not do in Romans 11:29?", options: ["Change", "Fail", "End", "Weaken"], answer: "Change" },
+    { question: "What were Gentiles once in Romans 11:30?", options: ["Disobedient", "Righteous", "Lawful", "Holy"], answer: "Disobedient" },
+    { question: "What does Paul praise in Romans 11:33?", options: ["God’s wisdom and knowledge", "The law", "Israel’s faith", "Gentile obedience"], answer: "God’s wisdom and knowledge" },
+    { question: "Who can be God’s counselor in Romans 11:34?", options: ["No one", "Paul", "Moses", "The church"], answer: "No one" },
+
+    // Romans Chapter 12 (30 questions)
+    { question: "What are believers urged to offer in Romans 12:1?", options: ["Their bodies", "Their money", "Their prayers", "Their works"], answer: "Their bodies" },
+    { question: "How should the offering be in Romans 12:1?", options: ["A living sacrifice", "A burnt offering", "A tithe", "A vow"], answer: "A living sacrifice" },
+    { question: "What should Christians not conform to in Romans 12:2?", options: ["The world", "The church", "The law", "God’s will"], answer: "The world" },
+    { question: "What should Christians be transformed by in Romans 12:2?", options: ["Renewing of the mind", "The law", "Works", "Prayer"], answer: "Renewing of the mind" },
+    { question: "What does renewing the mind help discern in Romans 12:2?", options: ["God’s will", "The law", "Sin", "Truth"], answer: "God’s will" },
+    { question: "What should Christians not think in Romans 12:3?", options: ["More highly of themselves", "Less of others", "About the law", "About sin"], answer: "More highly of themselves" },
+    { question: "What does each member have in Romans 12:4?", options: ["Different functions", "The same role", "Equal gifts", "No purpose"], answer: "Different functions" },
+    { question: "What are we in Christ in Romans 12:5?", options: ["One body", "Many bodies", "Separate", "Equal"], answer: "One body" },
+    { question: "What should we use according to Romans 12:6?", options: ["Our gifts", "Our wealth", "Our strength", "Our knowledge"], answer: "Our gifts" },
+    { question: "What gift is mentioned in Romans 12:6?", options: ["Prophecy", "Healing", "Tongues", "Miracles"], answer: "Prophecy" },
+    { question: "What should someone with the gift of service do in Romans 12:7?", options: ["Serve", "Teach", "Lead", "Give"], answer: "Serve" },
+    { question: "How should giving be done in Romans 12:8?", options: ["Generously", "Sparingly", "Secretly", "Proudly"], answer: "Generously" },
+    { question: "What should love be in Romans 12:9?", options: ["Sincere", "Conditional", "Hidden", "Loud"], answer: "Sincere" },
+    { question: "What should Christians hate in Romans 12:9?", options: ["Evil", "The law", "Others", "Sinful people"], answer: "Evil" },
+    { question: "What should Christians cling to in Romans 12:9?", options: ["Good", "The law", "Wealth", "Power"], answer: "Good" },
+    { question: "How should we honor one another in Romans 12:10?", options: ["Above ourselves", "Equally", "Below ourselves", "With gifts"], answer: "Above ourselves" },
+    { question: "What should not lack in Romans 12:11?", options: ["Zeal", "Faith", "Love", "Works"], answer: "Zeal" },
+    { question: "What should Christians be in Romans 12:12?", options: ["Joyful in hope", "Sad in trials", "Angry in prayer", "Proud in faith"], answer: "Joyful in hope" },
+    { question: "How should Christians respond to persecution in Romans 12:14?", options: ["Bless, don’t curse", "Curse, don’t bless", "Fight back", "Run away"], answer: "Bless, don’t curse" },
+    { question: "What should Christians do with those who weep in Romans 12:15?", options: ["Weep with them", "Ignore them", "Laugh at them", "Judge them"], answer: "Weep with them" },
+    { question: "What should Christians live in with each other in Romans 12:16?", options: ["Harmony", "Competition", "Judgment", "Separation"], answer: "Harmony" },
+    { question: "What should not be repaid with evil in Romans 12:17?", options: ["Evil", "Good", "Love", "Faith"], answer: "Evil" },
+    { question: "What should Christians do as far as it depends on them in Romans 12:18?", options: ["Live at peace", "Fight evil", "Judge others", "Teach the law"], answer: "Live at peace" },
+    { question: "Who should Christians leave vengeance to in Romans 12:19?", options: ["God", "Themselves", "The church", "The law"], answer: "God" },
+    { question: "What should Christians do to their enemy in Romans 12:20 if he’s hungry?", options: ["Feed him", "Ignore him", "Curse him", "Judge him"], answer: "Feed him" },
+    { question: "What overcomes evil in Romans 12:21?", options: ["Good", "Wrath", "Law", "Faith"], answer: "Good" },
+    { question: "What attitude should accompany leadership in Romans 12:8?", options: ["Diligence", "Pride", "Laziness", "Fear"], answer: "Diligence" },
+    { question: "What should Christians contribute to in Romans 12:13?", options: ["Needs of the saints", "The law", "The temple", "The government"], answer: "Needs of the saints" },
+    { question: "What should Christians practice in Romans 12:13?", options: ["Hospitality", "Judgment", "Wealth", "Silence"], answer: "Hospitality" },
+    { question: "What should Christians be faithful in during affliction in Romans 12:12?", options: ["Prayer", "Works", "Fasting", "Teaching"], answer: "Prayer" },
+
+    // Romans Chapter 13 (30 questions)
+    { question: "What should every person be subject to in Romans 13:1?", options: ["Governing authorities", "The church", "The law", "Themselves"], answer: "Governing authorities" },
+    { question: "Who establishes authorities according to Romans 13:1?", options: ["God", "People", "Kings", "Priests"], answer: "God" },
+    { question: "What does resisting authority oppose in Romans 13:2?", options: ["God’s ordinance", "Man’s law", "The church", "Freedom"], answer: "God’s ordinance" },
+    { question: "What do rulers cause to evil-doers in Romans 13:3?", options: ["Fear", "Reward", "Peace", "Joy"], answer: "Fear" },
+    { question: "What are rulers to good works in Romans 13:3?", options: ["A terror", "Not a terror", "A judge", "A reward"], answer: "Not a terror" },
+    { question: "What is the authority in Romans 13:4?", options: ["God’s servant", "Man’s servant", "The law’s servant", "The people’s servant"], answer: "God’s servant" },
+    { question: "What does the authority bear in Romans 13:4?", options: ["The sword", "The law", "The shield", "The crown"], answer: "The sword" },
+    { question: "Why should we submit in Romans 13:5?", options: ["For conscience and wrath", "For fear alone", "For reward", "For pride"], answer: "For conscience and wrath" },
+    { question: "What should Christians pay in Romans 13:6?", options: ["Taxes", "Tithes", "Offerings", "Fines"], answer: "Taxes" },
+    { question: "Why do authorities serve in Romans 13:6?", options: ["For God", "For money", "For power", "For the people"], answer: "For God" },
+    { question: "What should be given to whom it is owed in Romans 13:7?", options: ["Revenue, respect, honor", "Only money", "Only praise", "Nothing"], answer: "Revenue, respect, honor" },
+    { question: "What should Christians owe no one in Romans 13:8?", options: ["Anything but love", "Money", "Respect", "Obedience"], answer: "Anything but love" },
+    { question: "What fulfills the law in Romans 13:8?", options: ["Love", "Faith", "Works", "Obedience"], answer: "Love" },
+    { question: "What commandment is summed up in loving your neighbor in Romans 13:9?", options: ["Do not steal", "Do not murder", "Love your neighbor as yourself", "Honor your parents"], answer: "Love your neighbor as yourself" },
+    { question: "What does love not do in Romans 13:10?", options: ["Harm a neighbor", "Judge", "Steal", "Lie"], answer: "Harm a neighbor" },
+    { question: "What is the fulfillment of the law in Romans 13:10?", options: ["Love", "Obedience", "Faith", "Sacrifice"], answer: "Love" },
+    { question: "What should Christians understand in Romans 13:11?", options: ["The present time", "The law", "The future", "The past"], answer: "The present time" },
+    { question: "What is nearer now than when we first believed in Romans 13:11?", options: ["Salvation", "Judgment", "Death", "The law"], answer: "Salvation" },
+    { question: "What should Christians cast off in Romans 13:12?", options: ["Works of darkness", "The law", "Faith", "Hope"], answer: "Works of darkness" },
+    { question: "What should Christians put on in Romans 13:12?", options: ["Armor of light", "The law", "Good works", "Pride"], answer: "Armor of light" },
+    { question: "How should Christians behave in Romans 13:13?", options: ["Decently", "Proudly", "Silently", "Boldly"], answer: "Decently" },
+    { question: "What should Christians avoid in Romans 13:13?", options: ["Drunkenness", "Prayer", "Love", "Faith"], answer: "Drunkenness" },
+    { question: "What else should be avoided in Romans 13:13?", options: ["Sexual immorality", "Giving", "Teaching", "Worship"], answer: "Sexual immorality" },
+    { question: "What should Christians put on in Romans 13:14?", options: ["Lord Jesus Christ", "The law", "Good works", "Armor"], answer: "Lord Jesus Christ" },
+    { question: "What should Christians not gratify in Romans 13:14?", options: ["Desires of the flesh", "The Spirit", "The mind", "The heart"], answer: "Desires of the flesh" },
+    { question: "What is an example of a work of darkness in Romans 13:13?", options: ["Jealousy", "Kindness", "Patience", "Joy"], answer: "Jealousy" },
+    { question: "What time is it according to Romans 13:11?", options: ["Time to wake up", "Time to sleep", "Time to judge", "Time to work"], answer: "Time to wake up" },
+    { question: "What is the night in Romans 13:12?", options: ["Evil", "Sleep", "The law", "The world"], answer: "Evil" },
+    { question: "What should taxes be paid to in Romans 13:7?", options: ["Tax collectors", "The church", "The poor", "The priests"], answer: "Tax collectors" },
+    { question: "What is love of neighbor in Romans 13:9?", options: ["A summary of the law", "A suggestion", "A burden", "A reward"], answer: "A summary of the law" },
+
+    // Romans Chapter 14 (30 questions)
+    { question: "Who should Christians accept in Romans 14:1?", options: ["The weak in faith", "The strong", "The Jews", "The Gentiles"], answer: "The weak in faith" },
+    { question: "What should not be done to the weak in faith in Romans 14:1?", options: ["Dispute over opinions", "Teach them", "Help them", "Love them"], answer: "Dispute over opinions" },
+    { question: "What does one person eat in Romans 14:2?", options: ["Everything", "Only vegetables", "Only meat", "Nothing"], answer: "Everything" },
+    { question: "What does another eat in Romans 14:2?", options: ["Only vegetables", "Everything", "Only meat", "Bread"], answer: "Only vegetables" },
+    { question: "What should the eater not do in Romans 14:3?", options: ["Despise the abstainer", "Eat meat", "Judge others", "Pray"], answer: "Despise the abstainer" },
+    { question: "What should the abstainer not do in Romans 14:3?", options: ["Judge the eater", "Eat meat", "Pray less", "Abstain more"], answer: "Judge the eater" },
+    { question: "Who is the master of a servant in Romans 14:4?", options: ["God", "The church", "The law", "Man"], answer: "God" },
+    { question: "What should one not judge in Romans 14:4?", options: ["Another’s servant", "The law", "The strong", "The weak"], answer: "Another’s servant" },
+    { question: "What does one person consider in Romans 14:5?", options: ["One day above another", "All days equal", "No days holy", "Work days"], answer: "One day above another" },
+    { question: "What does another consider in Romans 14:5?", options: ["All days alike", "One day holy", "No days equal", "Rest days"], answer: "All days alike" },
+    { question: "Who should each be convinced by in Romans 14:5?", options: ["His own mind", "The church", "The law", "Others"], answer: "His own mind" },
+    { question: "Who does one honor by observing a day in Romans 14:6?", options: ["The Lord", "The law", "The church", "Himself"], answer: "The Lord" },
+    { question: "Who does one honor by eating in Romans 14:6?", options: ["The Lord", "The law", "The weak", "The strong"], answer: "The Lord" },
+    { question: "What do we not live or die to in Romans 14:7?", options: ["Ourselves", "The Lord", "The law", "The world"], answer: "Ourselves" },
+    { question: "Who do we belong to in life and death in Romans 14:8?", options: ["The Lord", "The law", "The church", "Ourselves"], answer: "The Lord" },
+    { question: "Why did Christ die and live again in Romans 14:9?", options: ["To be Lord of dead and living", "To end the law", "To judge", "To save"], answer: "To be Lord of dead and living" },
+    { question: "What will we all do according to Romans 14:10?", options: ["Stand before God’s judgment", "Live forever", "Obey the law", "Judge others"], answer: "Stand before God’s judgment" },
+    { question: "What will every knee do in Romans 14:11?", options: ["Bow to God", "Kneel to man", "Stand firm", "Run away"], answer: "Bow to God" },
+    { question: "What will every tongue do in Romans 14:11?", options: ["Confess to God", "Speak lies", "Be silent", "Pray"], answer: "Confess to God" },
+    { question: "What will each give in Romans 14:12?", options: ["An account to God", "Money", "Works", "Praise"], answer: "An account to God" },
+    { question: "What should Christians not put in a brother’s way in Romans 14:13?", options: ["A stumbling block", "A gift", "A law", "A prayer"], answer: "A stumbling block" },
+    { question: "What does Paul know about food in Romans 14:14?", options: ["Nothing is unclean", "All is unclean", "Meat is bad", "Vegetables are holy"], answer: "Nothing is unclean" },
+    { question: "What makes something unclean in Romans 14:14?", options: ["One’s belief", "The law", "God’s word", "The church"], answer: "One’s belief" },
+    { question: "What should not destroy someone Christ died for in Romans 14:15?", options: ["Food", "Judgment", "Law", "Sin"], answer: "Food" },
+    { question: "What should not be spoken evil of in Romans 14:16?", options: ["Your good", "The law", "The weak", "The strong"], answer: "Your good" },
+    { question: "What is the kingdom of God not in Romans 14:17?", options: ["Eating and drinking", "Faith", "Love", "Peace"], answer: "Eating and drinking" },
+    { question: "What is the kingdom of God in Romans 14:17?", options: ["Righteousness, peace, joy", "Law and order", "Food and drink", "Works"], answer: "Righteousness, peace, joy" },
+    { question: "Who is pleasing to God in Romans 14:18?", options: ["One who serves Christ", "One who eats", "One who abstains", "One who judges"], answer: "One who serves Christ" },
+    { question: "What should Christians pursue in Romans 14:19?", options: ["Peace and edification", "Judgment", "Law", "Wealth"], answer: "Peace and edification" },
+    { question: "What should not be destroyed over food in Romans 14:20?", options: ["God’s work", "The law", "The church", "Faith"], answer: "God’s work" },
+
+    // Romans Chapter 15 (30 questions)
+    { question: "Who should bear with the weak in Romans 15:1?", options: ["The strong", "The weak", "The church", "The law"], answer: "The strong" },
+    { question: "What should the strong not do in Romans 15:1?", options: ["Please themselves", "Help others", "Love", "Pray"], answer: "Please themselves" },
+    { question: "What should each please in Romans 15:2?", options: ["His neighbor", "Himself", "The law", "The church"], answer: "His neighbor" },
+    { question: "Why please the neighbor in Romans 15:2?", options: ["For his good", "For reward", "For pride", "For law"], answer: "For his good" },
+    { question: "Who did Christ not please in Romans 15:3?", options: ["Himself", "God", "The Jews", "The Gentiles"], answer: "Himself" },
+    { question: "What was written for our instruction in Romans 15:4?", options: ["Scriptures", "The law", "Paul’s words", "Prophecies"], answer: "Scriptures" },
+    { question: "What do Scriptures give in Romans 15:4?", options: ["Hope", "Law", "Judgment", "Wealth"], answer: "Hope" },
+    { question: "What does Paul pray God grants in Romans 15:5?", options: ["Unity", "Wealth", "Power", "Law"], answer: "Unity" },
+    { question: "How should Christians glorify God in Romans 15:6?", options: ["With one mind and voice", "Silently", "Separately", "With works"], answer: "With one mind and voice" },
+    { question: "Who should Christians accept in Romans 15:7?", options: ["One another", "Only the strong", "Only the weak", "The law"], answer: "One another" },
+    { question: "Why accept one another in Romans 15:7?", options: ["As Christ accepted us", "For reward", "For law", "For pride"], answer: "As Christ accepted us" },
+    { question: "Who did Christ become a servant to in Romans 15:8?", options: ["The Jews", "The Gentiles", "The church", "All people"], answer: "The Jews" },
+    { question: "Why did Christ serve the Jews in Romans 15:8?", options: ["To confirm promises", "To end the law", "To judge", "To save"], answer: "To confirm promises" },
+    { question: "Who might glorify God in Romans 15:9?", options: ["Gentiles", "Jews", "The church", "The strong"], answer: "Gentiles" },
+    { question: "What does Paul quote in Romans 15:10?", options: ["Rejoice, O Gentiles", "Fear God", "Obey the law", "Judge not"], answer: "Rejoice, O Gentiles" },
+    { question: "Who will praise the Lord in Romans 15:11?", options: ["All peoples", "Only Jews", "Only Gentiles", "The church"], answer: "All peoples" },
+    { question: "Who will rise to rule the nations in Romans 15:12?", options: ["The Root of Jesse", "Paul", "Moses", "David"], answer: "The Root of Jesse" },
+    { question: "What does Paul pray God fills believers with in Romans 15:13?", options: ["Joy and peace", "Wealth", "Law", "Strength"], answer: "Joy and peace" },
+    { question: "What should abound in hope in Romans 15:13?", options: ["Believers", "The law", "The weak", "The strong"], answer: "Believers" },
+    { question: "What does Paul say his readers are full of in Romans 15:14?", options: ["Goodness", "Sin", "Law", "Pride"], answer: "Goodness" },
+    { question: "What else are they filled with in Romans 15:14?", options: ["Knowledge", "Wealth", "Fear", "Doubt"], answer: "Knowledge" },
+    { question: "What can they do in Romans 15:14?", options: ["Admonish one another", "Judge", "Rule", "Teach the law"], answer: "Admonish one another" },
+    { question: "Why does Paul write boldly in Romans 15:15?", options: ["To remind them", "To judge them", "To boast", "To correct"], answer: "To remind them" },
+    { question: "What is Paul a minister of in Romans 15:16?", options: ["Christ to the Gentiles", "The law", "The Jews", "The church"], answer: "Christ to the Gentiles" },
+    { question: "What does Paul offer in Romans 15:16?", options: ["Gentiles as an offering", "The law", "Sacrifices", "Prayers"], answer: "Gentiles as an offering" },
+    { question: "Where does Paul boast in Romans 15:17?", options: ["Christ Jesus", "His works", "The law", "His heritage"], answer: "Christ Jesus" },
+    { question: "Where has Paul preached from in Romans 15:19?", options: ["Jerusalem to Illyricum", "Rome to Spain", "Judea to Galilee", "Asia to Greece"], answer: "Jerusalem to Illyricum" },
+    { question: "Where does Paul plan to go in Romans 15:24?", options: ["Spain", "Rome", "Jerusalem", "Corinth"], answer: "Spain" },
+    { question: "What does Paul plan to do first in Romans 15:25?", options: ["Serve in Jerusalem", "Go to Spain", "Write more", "Preach in Rome"], answer: "Serve in Jerusalem" },
+    { question: "Who contributed to the poor in Romans 15:26?", options: ["Macedonia and Achaia", "Rome", "Jerusalem", "Galatia"], answer: "Macedonia and Achaia" },
+
+    // Romans Chapter 16 (30 questions)
+    { question: "Who does Paul commend in Romans 16:1?", options: ["Phoebe", "Priscilla", "Mary", "Lydia"], answer: "Phoebe" },
+    { question: "What is Phoebe called in Romans 16:1?", options: ["A servant", "A teacher", "A prophet", "A leader"], answer: "A servant" },
+    { question: "What church is Phoebe part of in Romans 16:1?", options: ["Cenchreae", "Rome", "Corinth", "Ephesus"], answer: "Cenchreae" },
+    { question: "How should Phoebe be received in Romans 16:2?", options: ["In the Lord", "With caution", "With gifts", "With judgment"], answer: "In the Lord" },
+    { question: "Who should be greeted in Romans 16:3?", options: ["Priscilla and Aquila", "Timothy", "Silas", "Peter"], answer: "Priscilla and Aquila" },
+    { question: "What did Priscilla and Aquila risk in Romans 16:4?", options: ["Their lives", "Their wealth", "Their home", "Their faith"], answer: "Their lives" },
+    { question: "Who thanks Priscilla and Aquila in Romans 16:4?", options: ["Gentile churches", "Paul alone", "The Jews", "Rome"], answer: "Gentile churches" },
+    { question: "What meets in Priscilla and Aquila’s house in Romans 16:5?", options: ["A church", "A school", "A court", "A market"], answer: "A church" },
+    { question: "Who worked hard in Romans 16:6?", options: ["Mary", "Phoebe", "Priscilla", "Junia"], answer: "Mary" },
+    { question: "Who are Paul’s relatives in Romans 16:7?", options: ["Andronicus and Junia", "Timothy and Silas", "Priscilla and Aquila", "Lucius and Jason"], answer: "Andronicus and Junia" },
+    { question: "What are Andronicus and Junia in Romans 16:7?", options: ["Outstanding apostles", "Teachers", "Prophets", "Servants"], answer: "Outstanding apostles" },
+    { question: "Who is dear to Paul in Romans 16:8?", options: ["Ampliatus", "Urbanus", "Stachys", "Apelles"], answer: "Ampliatus" },
+    { question: "Who is a fellow worker in Romans 16:9?", options: ["Urbanus", "Stachys", "Apelles", "Timothy"], answer: "Urbanus" },
+    { question: "Who is approved in Christ in Romans 16:10?", options: ["Apelles", "Aristobulus", "Herodion", "Narcissus"], answer: "Apelles" },
+    { question: "Who is Paul’s relative in Romans 16:11?", options: ["Herodion", "Narcissus", "Asyncritus", "Phlegon"], answer: "Herodion" },
+    { question: "Who worked hard in the Lord in Romans 16:12?", options: ["Tryphena and Tryphosa", "Mary", "Phoebe", "Junia"], answer: "Tryphena and Tryphosa" },
+    { question: "Who is chosen in the Lord in Romans 16:13?", options: ["Rufus", "Asyncritus", "Phlegon", "Patrobas"], answer: "Rufus" },
+    { question: "Whose mother is like a mother to Paul in Romans 16:13?", options: ["Rufus’", "Timothy’s", "Urbanus’", "Stachys’"], answer: "Rufus’" },
+    { question: "Who are greeted together in Romans 16:14?", options: ["Asyncritus, Phlegon, Hermes", "Timothy, Silas, Luke", "Peter, James, John", "Paul, Barnabas, Mark"], answer: "Asyncritus, Phlegon, Hermes" },
+    { question: "Who is greeted with Julia in Romans 16:15?", options: ["Philologus", "Urbanus", "Apelles", "Herodion"], answer: "Philologus" },
+    { question: "How should Christians greet one another in Romans 16:16?", options: ["With a holy kiss", "With a handshake", "With a bow", "With words"], answer: "With a holy kiss" },
+    { question: "What do the churches of Christ send in Romans 16:16?", options: ["Greetings", "Money", "Teachers", "Laws"], answer: "Greetings" },
+    { question: "What should Christians watch out for in Romans 16:17?", options: ["Those causing divisions", "The law", "The weak", "The strong"], answer: "Those causing divisions" },
+    { question: "What do divisive people serve in Romans 16:18?", options: ["Their own appetites", "Christ", "The church", "The law"], answer: "Their own appetites" },
+    { question: "How do divisive people deceive in Romans 16:18?", options: ["With smooth talk", "With force", "With wealth", "With law"], answer: "With smooth talk" },
+    { question: "What is reported about the Romans in Romans 16:19?", options: ["Their obedience", "Their wealth", "Their sin", "Their strength"], answer: "Their obedience" },
+    { question: "What does Paul want them to be wise about in Romans 16:19?", options: ["Good", "Evil", "The law", "Judgment"], answer: "Good" },
+    { question: "What does Paul want them to be innocent of in Romans 16:19?", options: ["Evil", "Good", "The law", "Faith"], answer: "Evil" },
+    { question: "Who will crush Satan in Romans 16:20?", options: ["God of peace", "Christ", "Paul", "The church"], answer: "God of peace" },
+    { question: "When will Satan be crushed in Romans 16:20?", options: ["Soon", "Later", "Now", "Never"], answer: "Soon" }
+
+            // Add more Romans questions here...
+
+
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById("question").innerText = q.question;
+            
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            
+            q.options.forEach(option => {
+                const button = document.createElement("button");
+                button.innerText = option;
+                button.onclick = () => checkAnswer(option);
+                optionsDiv.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected) {
+            const q = questions[currentQuestion];
+            if (selected === q.answer) {
+                score++;
+                document.getElementById("score").innerText = `Score: ${score}`;
+                alert("Correct!");
+            } else {
+                alert(`Wrong! The correct answer was ${q.answer}`);
+            }
+            document.querySelectorAll(".options button").forEach(btn => {
+                btn.disabled = true;
+            });
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion >= questions.length) {
+                alert(`Game Over! Your final score is ${score}/${questions.length}`);
+                currentQuestion = 0;
+                score = 0;
+                document.getElementById("score").innerText = "Score: 0";
+            }
+            loadQuestion();
+        }
+
+        // Start the game
+        loadQuestion();
+    </script>
+</body>
+</html>
